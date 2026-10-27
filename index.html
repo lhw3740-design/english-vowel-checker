@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>영어 모음 점검기</title>
+<meta name="description" content="영어 단어 12개를 녹음하면 10번 논문과 같은 방법으로 원어민(Hillenbrand 1995)과의 모음 거리를 재서, 원어민 범위 밖 모음과 교정 방향을 알려 주는 점검 도구">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#record">녹음으로 바로 가기</a>
+
+<header class="hero">
+  <div class="hero-text">
+    <p class="paper">
+      <span class="paper-tag">10번 논문을 쓰는 앱</span>
+      <cite>영어 최초 노출 연령과 성인기 영어 문법성 판단·모음 음향 특성: 가족 4명 사례 연구</cite>
+      <span class="paper-by">이현우, 2026</span>
+    </p>
+    <h1>영어 모음 점검기</h1>
+    <p class="lead" id="lead">이 앱은 영어 모음을 원어민에 가깝게 내고 싶은 한국어 화자가 단어 12개를 녹음하면, 논문과 같은 방법으로 원어민 기준(Hillenbrand 외, 1995)과의 거리를 재서 원어민 범위 밖에 있는 모음을 짚어 주고 고칠 방향을 알려 줍니다.</p>
+    <ol class="steps">
+      <li><a href="#record">기준을 고르고 단어 12개를 녹음합니다.</a></li>
+      <li><a href="#result">모음 지도에서 원어민과의 거리를 확인합니다.</a></li>
+      <li><a href="#practice">가장 먼 모음을 다시 녹음해 전후를 비교합니다.</a></li>
+    </ol>
+    <p class="note">진단이 아니라 점검 도구입니다. 논문은 가족 4명의 사례였고, 이 앱은 그 논문의 측정 방법을 누구나 써 볼 수 있게 옮긴 것입니다. 녹음은 이 브라우저 안에서만 분석되고 어디로도 보내지 않습니다.</p>
+  </div>
+
+  <figure class="chart-wrap" aria-labelledby="chart-cap">
+    <svg id="chart" viewBox="0 0 520 440" role="img" aria-label="모음 지도"></svg>
+    <figcaption id="chart-cap">
+      <span class="key key-native"></span>원어민 평균과 원어민 범위(같은 집단 90%가 드는 거리)
+      <span class="key key-in"></span>내 모음, 범위 안
+      <span class="key key-out"></span>내 모음, 범위 밖
+      <span class="axis-note">왼쪽일수록 혀가 앞, 위쪽일수록 혀가 높습니다.</span>
+    </figcaption>
+  </figure>
+</header>
+
+<main>
+  <section id="record" class="block">
+    <h2><span class="num">1</span>기준을 고르고 단어 12개를 녹음하세요</h2>
+
+    <fieldset class="groups">
+      <legend>내 목소리와 비교할 원어민 기준</legend>
+      <label><input type="radio" name="group" value="men" checked> 성인 남성 <small>45명</small></label>
+      <label><input type="radio" name="group" value="women"> 성인 여성 <small>48명</small></label>
+      <label><input type="radio" name="group" value="kids"> 아동 10~12세 <small>46명, 남녀 합침</small></label>
+    </fieldset>
+
+    <div class="howto">
+      <p>단어 카드의 <b>녹음</b>을 누르고 단어를 평소 속도로 한 번 말한 뒤 <b>멈추기</b>를 누르세요. 4초가 지나면 자동으로 멈춥니다. 조용한 곳에서, 마이크와 입 사이를 한 뼘 정도로 두면 잘 잡힙니다. 녹음 파일(wav, m4a, mp3 등)이 있으면 <b>파일</b>로 올려도 됩니다.</p>
+      <p>마이크 없이 먼저 보고 싶다면 예시로 체험하세요.</p>
+      <div class="examples">
+        <button type="button" class="btn ghost" id="ex-native">원어민 음성으로 체험</button>
+        <button type="button" class="btn ghost" id="ex-virtual">한국어 화자 경향 예시</button>
+        <button type="button" class="btn quiet" id="clear-all">모두 지우기</button>
+      </div>
+      <p class="small" id="example-note" hidden></p>
+    </div>
+
+    <p class="progress" aria-live="polite"><span id="done-count">0</span> / 12 완료 <span id="progress-hint"></span></p>
+    <ul class="words" id="words"></ul>
+  </section>
+
+  <section id="result" class="block" aria-live="polite">
+    <h2><span class="num">2</span>결과: 원어민과 얼마나 떨어져 있나요</h2>
+    <div id="result-empty" class="empty">단어를 11개 이상 녹음하면 결과가 나옵니다. 지금은 <span id="result-need">11</span>개가 더 필요합니다.</div>
+    <div id="result-body" hidden>
+      <div class="summary">
+        <div class="metric" id="m-static"></div>
+        <div class="metric secondary" id="m-dynamic"></div>
+      </div>
+      <p class="context" id="context"></p>
+      <h3>모음별 거리 <small>먼 순서, 막대 끝 눈금이 그 모음의 원어민 범위</small></h3>
+      <ol class="vowel-list" id="vowel-list"></ol>
+    </div>
+  </section>
+
+  <section id="practice" class="block">
+    <h2><span class="num">3</span>가장 먼 모음을 다시 녹음해 비교하세요</h2>
+    <div id="practice-empty" class="empty">결과가 나오면 원어민과 가장 먼 모음을 골라 드립니다.</div>
+    <div id="practice-body" hidden>
+      <label class="pick">연습할 모음
+        <select id="practice-select"></select>
+      </label>
+      <div class="practice-card">
+        <p class="p-word" id="p-word"></p>
+        <div class="p-tips" id="p-tips"></div>
+        <div class="p-actions">
+          <button type="button" class="btn primary" id="p-rec">다시 녹음</button>
+          <label class="btn ghost file-btn">파일<input type="file" accept="audio/*,.wav,.m4a,.mp3,.webm,.ogg" id="p-file"></label>
+          <span class="status" id="p-status"></span>
+        </div>
+        <div class="compare" id="p-compare" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block method">
+    <details>
+      <summary>어떻게 재나요? (논문과 같은 방법)</summary>
+      <ol>
+        <li><b>모음 구간</b>: 녹음에서 성대가 울리는 구간(자기상관 피치 분석의 유성음 구간, 문턱 0.45)을 찾아 가장 긴 것을 모음으로 봅니다. 원어민 음성도 똑같은 규칙으로 잘랐습니다(논문 부록 C 조건 A).</li>
+        <li><b>포먼트</b>: Burg 법(시간 간격 0.01초, 포먼트 5개, 분석 창 0.025초, 선강조 50 Hz, 상한 남 5000 Hz·여·아동 5500 Hz)으로 모음 구간의 20·50·80% 지점 F1·F2를 잽니다. F1은 입을 벌릴수록(혀가 낮을수록), F2는 혀가 앞에 있을수록 높습니다.</li>
+        <li><b>정규화</b>: 사람마다 목소리 크기가 달라 Hz를 바로 비교하지 않고, 내 12모음의 평균·표준편차로 z-점수를 만듭니다(Lobanov, 1971).</li>
+        <li><b>정적 거리</b>: 모음마다 50% 지점과 원어민 평균점의 거리를 구해 평균합니다. <b>동적 거리</b>는 20%→80% 변화량을 같은 방식으로 비교합니다(보조).</li>
+        <li><b>원어민 범위</b>: 원어민 한 사람 한 사람을 같은 방식으로 재서, 90%가 드는 거리 안이면 "범위 안"입니다.</li>
+      </ol>
+      <p>원어민 기준값은 Hillenbrand 외(1995)의 공개 음성 1,668개를 이 앱과 같은 코드로 측정해 만들었습니다. 성인 기준은 논문 부록 C 조건 A("원어민도 유성음 자동 구간")의 값(남 0.370, 여 0.427)과 같고, 아동 기준(0.601)은 같은 방법을 새로 적용한 값입니다. 자세한 기록은 <a href="기준값_측정기록.md">기준값 측정 기록</a>에 있습니다.</p>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <p>만든 사람 이현우 · <a href="https://lee-hyeonwoo-intro.vercel.app/">자기소개 사이트</a> · <a href="https://github.com/lhw3740-design/Critical-Period-Hypothesis-LeeHyeonWoo">논문과 재현 자료</a></p>
+  <p class="small">원어민 자료: Hillenbrand, J., Getty, L. A., Clark, M. J., &amp; Wheeler, K. (1995). Acoustic characteristics of American English vowels. <i>JASA, 97</i>(5), 3099–3111.</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<template id="word-tpl">
+  <li class="word">
+    <div class="w-head">
+      <span class="w-ipa"></span>
+      <span class="w-text"></span>
+    </div>
+    <p class="w-status">아직 녹음하지 않았습니다.</p>
+    <div class="w-actions">
+      <button type="button" class="btn small primary w-rec">녹음</button>
+      <label class="btn small ghost file-btn">파일<input type="file" accept="audio/*,.wav,.m4a,.mp3,.webm,.ogg"></label>
+      <button type="button" class="btn small quiet w-play" hidden>듣기</button>
+    </div>
+  </li>
+</template>
+
+<script src="js/praat-formant.js"></script>
+<script src="js/vowel-analysis.js"></script>
+<script src="js/reference.js"></script>
+<script src="js/example-native.js" defer></script>
+<script src="js/app.js"></script>
+</body>
+</html>
