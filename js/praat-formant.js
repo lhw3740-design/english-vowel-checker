@@ -1,7 +1,7 @@
 /*
  * praat-formant.js
  * Praat "Sound: To Formant (burg)..."과 같은 계산을 JavaScript로 옮긴 것.
- * 10번 논문(parselmouth 0.4.7, Praat 6.1.38 엔진)의 설정을 그대로 쓴다:
+ * 바탕 논문(parselmouth 0.4.7, Praat 6.1.38 엔진)의 설정을 그대로 쓴다:
  *   시간 간격 0.01 s, 최대 포먼트 5개(LPC 차수 10), 분석 창 0.025 s(실제 가우시안 창 0.05 s),
  *   선강조 50 Hz, 상한 남 5000 Hz / 여 5500 Hz / 아동 별도.
  * 순서: (필요하면) 2×상한으로 리샘플(FFT 저역통과 + sinc 보간, 정밀도 50)

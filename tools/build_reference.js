@@ -1,4 +1,4 @@
-// 원어민 기준값 계산 (10번 논문 compute_distances.py와 같은 방법, 측정은 앱과 같은 JS 코드)
+// 원어민 기준값 계산 (바탕 논문 compute_distances.py와 같은 방법, 측정은 앱과 같은 JS 코드)
 // 실행: node build_reference.js <hillenbrand_dir> <out_json> [--kids-ceiling-scan]
 const fs = require("fs");
 const P = require(require("path").join(__dirname, "..", "js", "praat-formant.js"));

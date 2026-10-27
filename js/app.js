@@ -9,7 +9,7 @@
   const MAX_REC_SEC = 4;
   const MAX_FILE_MB = 30;
 
-  // 논문에서 나온 결과(교정 팁 근거). 10번 논문 4.2절·5.2절
+  // 논문에서 나온 결과(교정 팁 근거). 바탕 논문 4.2절·5.2절
   const TIPS = {
     iy: "한국어 '이'보다 입꼬리를 옆으로 당기고 조금 길게 냅니다.",
     ih: "'이'와 '에' 사이의 짧고 느슨한 소리입니다. 혀에 힘을 빼고 짧게 끊습니다.",
@@ -525,6 +525,6 @@
   }
   init();
 
-  // 점검용(자동 검사에서 사용): 화면 상태 읽기
+  // 자동 테스트용: 화면 상태 읽기
   window.__vowelApp = { state, update, analyzeSamples: (code, samples, fs) => takeAudio(code, { samples, fs }, null, "test", "word"), practiceSamples: (code, samples, fs) => takeAudio(code, { samples, fs }, null, "test", "practice") };
 })();
